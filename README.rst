@@ -45,5 +45,16 @@ Checking out non-master branches is easy:
     Products.CMFPlone = 4.3.x
 
 
+URLs
+====
+
+Generated sources.cfg
+    http://plonesource.org/sources.cfg
+
+Last updated timestamp
+    http://plonesource.org/last-update.txt
+
+
+
 .. _plonesource.org: http://plonesource.org/
 .. _mr.developer: https://pypi.python.org/pypi/mr.developer
