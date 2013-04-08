@@ -15,15 +15,15 @@ Extend your buildout from the
 [sources.cfg](http://plonesource.org/sources.cfg) and configure what
 repositories you want to checkout with the `auto-checkout` option:
 
-{{{ini
-[buildout]
-extends = http://plonesource.org/sources.cfg
 
-auto-checkout =
-    Products.CMFPlone
-    zope.interface
-    collective.transmogrifier
-}}}
+    [buildout]
+    extends = http://plonesource.org/sources.cfg
+
+    auto-checkout =
+        Products.CMFPlone
+        zope.interface
+        collective.transmogrifier
+
 
 
 
@@ -31,16 +31,16 @@ auto-checkout =
 
 Checking out non-master branches is easy:
 
-{{{ini
-[buildout]
-extends = http://plonesource.org/sources.cfg
 
-auto-checkout =
-    Products.CMFPlone
+    [buildout]
+    extends = http://plonesource.org/sources.cfg
 
-[branches]
-Products.CMFPlone = 4.3.x
-}}}
+    auto-checkout =
+        Products.CMFPlone
+
+    [branches]
+    Products.CMFPlone = 4.3.x
+
 
 
 ## URLs
