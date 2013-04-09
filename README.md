@@ -19,6 +19,9 @@ repositories you want to checkout with the `auto-checkout` option:
     [buildout]
     extends = http://plonesource.org/sources.cfg
 
+    extensions =
+        mr.developer
+
     auto-checkout =
         Products.CMFPlone
         zope.interface
@@ -34,6 +37,9 @@ Checking out non-master branches is easy:
 
     [buildout]
     extends = http://plonesource.org/sources.cfg
+
+    extensions =
+        mr.developer
 
     auto-checkout =
         Products.CMFPlone
