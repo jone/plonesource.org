@@ -15,7 +15,8 @@ def read_config():
     with open(path) as file_:
         parser.readfp(file_)
 
-    return {'principals': to_list(parser.get('plonesource', 'principals'))}
+    return {'principals': to_list(parser.get('plonesource', 'principals')),
+            'repos': to_list(parser.get('plonesource', 'repos'))}
 
 
 CONFIG = read_config()

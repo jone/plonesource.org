@@ -15,22 +15,36 @@ TIMESTAMP_PATH = os.path.abspath(
                  'static', 'last-update.txt'))
 
 
-def update(principals):
+def update(principals, repos):
     repositories = {}
 
     for principal in principals:
-        load_repositories(principal, repositories)
+        load_principal_repositories(principal, repositories)
+
+    for fullname in repos:
+        load_single_repositories(fullname, repositories)
 
     return generate_sources_cfg(repositories)
 
 
-def load_repositories(principal, result):
+def load_principal_repositories(principal, result):
     for repo in GITHUB.repos.list(principal).all():
-        result[repo.name] = {
-            'name': repo.name,
+        result[repo.name] = extract_repo_data(repo)
+
+
+def load_single_repositories(fullname, result):
+    username, reponame = fullname.split('/')
+    repo = GITHUB.repos.get(user=username, repo=reponame)
+    result[repo.name] = extract_repo_data(repo)
+
+
+def extract_repo_data(repo):
+    return {'name': repo.name,
             'clone_url': repo.clone_url,
             'push_url': repo.ssh_url,
             'branch': repo.master_branch}
+
+
 
 def generate_sources_cfg(repositories):
     branches = []
@@ -58,7 +72,8 @@ def generate_sources_cfg(repositories):
 
 
 def main():
-    data = update(reversed(CONFIG.get('principals')))
+    data = update(reversed(CONFIG.get('principals')),
+                  CONFIG.get('repos'))
     with open(OUTPUT_PATH, 'w+') as file_:
         file_.write(data)
 
