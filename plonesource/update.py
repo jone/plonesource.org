@@ -15,6 +15,11 @@ TIMESTAMP_PATH = os.path.abspath(
                  'static', 'last-update.txt'))
 
 
+class EmptyRepositoryException(Exception):
+    """This happens on freshly created repositories which have no code yet.
+    """
+
+
 def update(principals, repos):
     repositories = {}
 
@@ -22,14 +27,20 @@ def update(principals, repos):
         load_principal_repositories(principal, repositories)
 
     for fullname in repos:
-        load_single_repositories(fullname, repositories)
+        try:
+            load_single_repositories(fullname, repositories)
+        except EmptyRepositoryException:
+            pass
 
     return generate_sources_cfg(repositories)
 
 
 def load_principal_repositories(principal, result):
     for repo in GITHUB.repos.list(principal).all():
-        result[repo.name] = extract_repo_data(repo)
+        try:
+            result[repo.name] = extract_repo_data(repo)
+        except EmptyRepositoryException:
+            pass
 
 
 def load_single_repositories(fullname, result):
@@ -39,11 +50,13 @@ def load_single_repositories(fullname, result):
 
 
 def extract_repo_data(repo):
+    if getattr(repo, 'master_branch', None) is None:
+        raise EmptyRepositoryException('%s is empty' % repo.name)
+
     return {'name': repo.name,
             'clone_url': repo.clone_url,
             'push_url': repo.ssh_url,
             'branch': repo.master_branch}
-
 
 
 def generate_sources_cfg(repositories):
@@ -63,7 +76,7 @@ def generate_sources_cfg(repositories):
         '[branches]'] + \
         sorted(branches) + [
         '',
-        ''
+        '',
         '[sources]'] + \
         sorted(sources) + [
         '']
