@@ -30,8 +30,8 @@ class GithubStubTestCase(MockerTestCase, TestCase):
             self._stub_repo(repo)
 
     def _stub_repo(self, repo):
-        self.expect(self.github_stub.repos.get(user=repo.principal,
-                                               repo=repo.name)).result(repo)
+        self.expect(self.github_stub.repos.get(repo=repo.name,
+                                               user=repo.principal)).result(repo)
 
         if repo.principal not in self.repositories_by_principal:
             self.repositories_by_principal[repo.principal] = []
@@ -43,8 +43,12 @@ class GithubStubTestCase(MockerTestCase, TestCase):
 
 class Repository(object):
 
-    def __init__(self, fullname):
+    def __init__(self, fullname, master_branch='master'):
         self.principal, self.name = fullname.split('/')
         self.clone_url = 'https://github.com/%s.git' % fullname
         self.ssh_url = 'git@github.com:%s.git' % fullname
-        self.master_branch = 'master'
+
+        if master_branch is not None:
+            # github returns no master_branch on empty repositories, so
+            # it should not be set to None her but not set at all.
+            self.master_branch = master_branch
