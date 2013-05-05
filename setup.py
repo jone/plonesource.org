@@ -3,6 +3,11 @@ from setuptools import setup, find_packages
 
 version = '1.0.dev0'
 
+tests_require = [
+    'unittest2',
+    'mocker',
+    ]
+
 
 setup(name='plonesource',
       version=version,
@@ -28,6 +33,9 @@ setup(name='plonesource',
         'setuptools',
         'pygithub3',
         ],
+
+      tests_require=tests_require,
+      extras_require={'tests': tests_require},
 
       entry_points = {
         'console_scripts' : ['update = plonesource.update:main']
