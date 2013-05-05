@@ -20,7 +20,10 @@ class EmptyRepositoryException(Exception):
     """
 
 
-def update(principals, repos):
+def update(config):
+    principals = reversed(config.get('principals', []))
+    repos = config.get('repos', [])
+
     repositories = {}
 
     for principal in principals:
@@ -85,8 +88,7 @@ def generate_sources_cfg(repositories):
 
 
 def main():
-    data = update(reversed(CONFIG.get('principals')),
-                  CONFIG.get('repos'))
+    data = update(CONFIG)
     with open(OUTPUT_PATH, 'w+') as file_:
         file_.write(data)
 
