@@ -1,6 +1,9 @@
+from datetime import datetime
 from plonesource.tests.base import GithubStubTestCase
 from plonesource.tests.base import Repository
 from plonesource.update import update
+from unittest2 import TestCase
+import tempfile
 
 
 class TestUpdateSourcesConfig(GithubStubTestCase):
@@ -140,3 +143,73 @@ sources = sources
 ''',
 
             result)
+
+
+class TestUpdateCommand(TestCase):
+
+    def setUp(self):
+        self._constants = []
+
+        from plonesource import config
+        self.backup_constant(config, 'CONFIG')
+
+        from plonesource import update
+        self.backup_constant(update, 'OUTPUT_PATH')
+        self.backup_constant(update, 'TIMESTAMP_PATH')
+
+    def tearDown(self):
+        self.reset_constants()
+
+    def test_output_paths_are_in_static_folder(self):
+        from plonesource import update
+
+        expected_end = '/static/sources.cfg'
+        self.assertTrue(
+            update.OUTPUT_PATH.endswith(expected_end),
+            'Expected the output path (%s) to end with %s' % (
+                update.OUTPUT_PATH, expected_end))
+
+        expected_end = '/static/last-update.txt'
+        self.assertTrue(
+            update.TIMESTAMP_PATH.endswith(expected_end),
+            'Expected the timestamp path (%s) to end with %s' % (
+                update.OUTPUT_PATH, expected_end))
+
+    def test_update_command_writes_to_files(self):
+        output = tempfile.NamedTemporaryFile()
+        timestamp = tempfile.NamedTemporaryFile()
+
+        from plonesource import update
+        update.OUTPUT_PATH = output.name
+        update.TIMESTAMP_PATH = timestamp.name
+
+        from plonesource import config
+        config.CONFIG = {}
+
+        update.main()
+
+        self.maxDiff = None
+        self.assertMultiLineEqual(
+            '''[buildout]
+auto-checkout =
+sources = sources
+
+[branches]
+
+
+[sources]
+''',
+            output.read(),
+            'Expected update command to write into sources.cfg')
+
+        self.assertGreater(len(timestamp.read()), 0,
+                           'Expected timestamp file to be written.')
+
+    def backup_constant(self, module, name):
+        setattr(module, '%s__ORI' % name, getattr(module, name))
+        self._constants.append((module, name))
+
+    def reset_constants(self):
+        for module, name in self._constants:
+            setattr(module, name, getattr(module, '%s__ORI' % name))
+            delattr(module, '%s__ORI' % name)

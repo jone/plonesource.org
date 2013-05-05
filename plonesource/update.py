@@ -1,5 +1,5 @@
 from datetime import datetime
-from plonesource.config import CONFIG
+from plonesource import config
 from pygithub3 import Github
 import os
 
@@ -88,7 +88,7 @@ def generate_sources_cfg(repositories):
 
 
 def main():
-    data = update(CONFIG)
+    data = update(config.CONFIG)
     with open(OUTPUT_PATH, 'w+') as file_:
         file_.write(data)
 
