@@ -43,10 +43,16 @@ class GithubStubTestCase(MockerTestCase, TestCase):
 
 class Repository(object):
 
-    def __init__(self, fullname, master_branch='master'):
+    def __init__(self, fullname, master_branch='master', parent=None):
         self.principal, self.name = fullname.split('/')
         self.clone_url = 'https://github.com/%s.git' % fullname
         self.ssh_url = 'git@github.com:%s.git' % fullname
+
+        if parent:
+            self.parent = parent
+            self.fork = True
+        else:
+            self.fork = False
 
         if master_branch is not None:
             # github returns no master_branch on empty repositories, so

@@ -40,6 +40,9 @@ def update(config):
 
 def load_principal_repositories(principal, result):
     for repo in GITHUB.repos.list(principal).all():
+        while repo.fork:
+            repo = repo.parent
+
         try:
             result[repo.name] = extract_repo_data(repo)
         except EmptyRepositoryException:

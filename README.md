@@ -48,6 +48,14 @@ Checking out non-master branches is easy:
     Products.CMFPlone = 4.3.x
 
 
+## Handling of forks
+
+Forks are not include but the original repositories are.
+The original repository is included even when the principal is not
+configured in the
+[config.ini](https://github.com/jone/plonesource.org/blob/master/config.ini).
+
+
 
 ## URLs
 

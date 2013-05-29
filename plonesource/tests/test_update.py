@@ -143,6 +143,80 @@ sources = sources
 
             result)
 
+    def test_forks_should_be_followed_recursively(self):
+        original = Repository('organisation/the.repo')
+        first_fork = Repository('john.doe/the.repo', parent=original)
+        second_fork = Repository('peter.griffin/the.repo', parent=first_fork)
+
+        self.stub_repositories(original, first_fork, second_fork)
+        self.replay()
+
+        result = update({'principals': ['peter.griffin']})
+
+        self.maxDiff = None
+        self.assertMultiLineEqual(
+            '''[buildout]
+auto-checkout =
+sources = sources
+
+[branches]
+the.repo = master
+
+
+[sources]
+the.repo = git https://github.com/organisation/the.repo.git pushurl=git@github.com:organisation/the.repo.git branch=${branches:the.repo}
+''',
+            result)
+
+    def test_forks_can_be_used_by_defining_it_explictily(self):
+        original = Repository('organisation/the.repo')
+        fork = Repository('john.doe/the.repo', parent=original)
+
+        self.stub_repositories(original, fork)
+        self.replay()
+
+        result = update({'principals': ['john.doe'],
+                         'repos': ['john.doe/the.repo']})
+
+        self.maxDiff = None
+        self.assertMultiLineEqual(
+            '''[buildout]
+auto-checkout =
+sources = sources
+
+[branches]
+the.repo = master
+
+
+[sources]
+the.repo = git https://github.com/john.doe/the.repo.git pushurl=git@github.com:john.doe/the.repo.git branch=${branches:the.repo}
+''',
+            result)
+
+    def test_forks_have_precedence_over_principal_order(self):
+        bottom_repo = Repository('bottom/the.repo')
+        top_repo = Repository('top/the.repo', parent=bottom_repo)
+
+        self.stub_repositories(top_repo, bottom_repo)
+        self.replay()
+
+        result = update({'principals': ['top', 'bottom']})
+
+        self.maxDiff = None
+        self.assertMultiLineEqual(
+            '''[buildout]
+auto-checkout =
+sources = sources
+
+[branches]
+the.repo = master
+
+
+[sources]
+the.repo = git https://github.com/bottom/the.repo.git pushurl=git@github.com:bottom/the.repo.git branch=${branches:the.repo}
+''',
+            result)
+
 
 class TestUpdateCommand(TestCase):
 
