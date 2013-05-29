@@ -41,7 +41,9 @@ def update(config):
 def load_principal_repositories(principal, result):
     for repo in GITHUB.repos.list(principal).all():
         while repo.fork:
-            repo = repo.parent
+            # The repo from repos.list does not have "parent" set.
+            # We need to re-get the repo with the parent.
+            repo = get_repository(repo.full_name).parent
 
         try:
             result[repo.name] = extract_repo_data(repo)
@@ -50,9 +52,13 @@ def load_principal_repositories(principal, result):
 
 
 def load_single_repositories(fullname, result):
-    username, reponame = fullname.split('/')
-    repo = GITHUB.repos.get(user=username, repo=reponame)
+    repo = get_repository(fullname)
     result[repo.name] = extract_repo_data(repo)
+
+
+def get_repository(fullname):
+    username, reponame = fullname.split('/')
+    return GITHUB.repos.get(user=username, repo=reponame)
 
 
 def extract_repo_data(repo):

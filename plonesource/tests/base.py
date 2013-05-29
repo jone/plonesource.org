@@ -1,3 +1,4 @@
+from copy import copy
 from mocker import MockerTestCase
 from unittest2 import TestCase
 
@@ -30,10 +31,6 @@ class GithubStubTestCase(MockerTestCase, TestCase):
             self._stub_repo(repo)
 
     def _stub_repo(self, repo):
-        self.expect(self.github_stub.repos.get(
-                repo=repo.name,
-                user=repo.principal)).result(repo)
-
         if repo.principal not in self.repositories_by_principal:
             self.repositories_by_principal[repo.principal] = []
             self.expect(
@@ -42,16 +39,23 @@ class GithubStubTestCase(MockerTestCase, TestCase):
 
         self.repositories_by_principal[repo.principal].append(repo)
 
+        repo_with_parent = repo.get_repo_with_parent()
+
+        self.expect(self.github_stub.repos.get(
+                repo=repo.name,
+                user=repo.principal)).result(repo_with_parent)
+
 
 class Repository(object):
 
     def __init__(self, fullname, master_branch='master', parent=None):
+        self.full_name = fullname
         self.principal, self.name = fullname.split('/')
         self.clone_url = 'https://github.com/%s.git' % fullname
         self.ssh_url = 'git@github.com:%s.git' % fullname
 
         if parent:
-            self.parent = parent
+            self._parent = parent
             self.fork = True
         else:
             self.fork = False
@@ -60,3 +64,16 @@ class Repository(object):
             # github returns no master_branch on empty repositories, so
             # it should not be set to None her but not set at all.
             self.master_branch = master_branch
+
+    def get_repo_with_parent(self):
+        """github.repos.list returns no .parent, but github.repos.get does.
+        This is a workaround for simulating this behavior.
+        This method returns a new instance of itself with parent set, if the
+        repos is a fork.
+        """
+        if not self.fork:
+            return self
+
+        repo = copy(self)
+        repo.parent = repo._parent
+        return repo
