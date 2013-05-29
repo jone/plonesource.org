@@ -4,7 +4,8 @@ from pygithub3 import Github
 import os
 
 
-GITHUB = Github()
+GITHUB = Github(token=config.get_api_token())
+
 
 OUTPUT_PATH = os.path.abspath(
     os.path.join(os.path.dirname(__file__), '..',

@@ -19,4 +19,15 @@ def read_config():
             'repos': to_list(parser.get('plonesource', 'repos'))}
 
 
+def get_api_token():
+    path = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), '..', 'TOKEN'))
+
+    if not os.path.exists(path):
+        return None
+
+    with open(path) as file_:
+        return file_.read().strip()
+
+
 CONFIG = read_config()
