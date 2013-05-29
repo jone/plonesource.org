@@ -1,4 +1,3 @@
-from datetime import datetime
 from plonesource.tests.base import GithubStubTestCase
 from plonesource.tests.base import Repository
 from plonesource.update import update
