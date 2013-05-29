@@ -30,12 +30,14 @@ class GithubStubTestCase(MockerTestCase, TestCase):
             self._stub_repo(repo)
 
     def _stub_repo(self, repo):
-        self.expect(self.github_stub.repos.get(repo=repo.name,
-                                               user=repo.principal)).result(repo)
+        self.expect(self.github_stub.repos.get(
+                repo=repo.name,
+                user=repo.principal)).result(repo)
 
         if repo.principal not in self.repositories_by_principal:
             self.repositories_by_principal[repo.principal] = []
-            self.expect(self.github_stub.repos.list(repo.principal).all()).result(
+            self.expect(
+                self.github_stub.repos.list(repo.principal).all()).result(
                 self.repositories_by_principal[repo.principal])
 
         self.repositories_by_principal[repo.principal].append(repo)
