@@ -34,9 +34,14 @@ foo.bar = master
 foo.baz = master
 
 
+[forks]
+foo.bar = foo
+foo.baz = foo
+
+
 [sources]
-foo.bar = git ${buildout:github-cloneurl}foo/foo.bar.git pushurl=${buildout:github-pushurl}foo/foo.bar.git branch=${branches:foo.bar}
-foo.baz = git ${buildout:github-cloneurl}foo/foo.baz.git pushurl=${buildout:github-pushurl}foo/foo.baz.git branch=${branches:foo.baz}
+foo.bar = git ${buildout:github-cloneurl}${forks:foo.bar}/foo.bar.git pushurl=${buildout:github-pushurl}${forks:foo.bar}/foo.bar.git branch=${branches:foo.bar}
+foo.baz = git ${buildout:github-cloneurl}${forks:foo.baz}/foo.baz.git pushurl=${buildout:github-pushurl}${forks:foo.baz}/foo.baz.git branch=${branches:foo.baz}
 ''',
 
             result,
@@ -73,10 +78,16 @@ baz = master
 foo = master
 
 
+[forks]
+bar = foo
+baz = bar
+foo = foo
+
+
 [sources]
-bar = git ${buildout:github-cloneurl}foo/bar.git pushurl=${buildout:github-pushurl}foo/bar.git branch=${branches:bar}
-baz = git ${buildout:github-cloneurl}bar/baz.git pushurl=${buildout:github-pushurl}bar/baz.git branch=${branches:baz}
-foo = git ${buildout:github-cloneurl}foo/foo.git pushurl=${buildout:github-pushurl}foo/foo.git branch=${branches:foo}
+bar = git ${buildout:github-cloneurl}${forks:bar}/bar.git pushurl=${buildout:github-pushurl}${forks:bar}/bar.git branch=${branches:bar}
+baz = git ${buildout:github-cloneurl}${forks:baz}/baz.git pushurl=${buildout:github-pushurl}${forks:baz}/baz.git branch=${branches:baz}
+foo = git ${buildout:github-cloneurl}${forks:foo}/foo.git pushurl=${buildout:github-pushurl}${forks:foo}/foo.git branch=${branches:foo}
 ''',
 
             result)
@@ -108,9 +119,14 @@ foo.bar = master
 foo.baz = master
 
 
+[forks]
+foo.bar = foo
+foo.baz = foo
+
+
 [sources]
-foo.bar = git ${buildout:github-cloneurl}foo/foo.bar.git pushurl=${buildout:github-pushurl}foo/foo.bar.git branch=${branches:foo.bar}
-foo.baz = git ${buildout:github-cloneurl}foo/foo.baz.git pushurl=${buildout:github-pushurl}foo/foo.baz.git branch=${branches:foo.baz}
+foo.bar = git ${buildout:github-cloneurl}${forks:foo.bar}/foo.bar.git pushurl=${buildout:github-pushurl}${forks:foo.bar}/foo.bar.git branch=${branches:foo.bar}
+foo.baz = git ${buildout:github-cloneurl}${forks:foo.baz}/foo.baz.git pushurl=${buildout:github-pushurl}${forks:foo.baz}/foo.baz.git branch=${branches:foo.baz}
 ''',
 
             result)
@@ -144,9 +160,14 @@ another = master
 the-repo = master
 
 
+[forks]
+another = foo
+the-repo = bar
+
+
 [sources]
-another = git ${buildout:github-cloneurl}foo/another.git pushurl=${buildout:github-pushurl}foo/another.git branch=${branches:another}
-the-repo = git ${buildout:github-cloneurl}bar/the-repo.git pushurl=${buildout:github-pushurl}bar/the-repo.git branch=${branches:the-repo}
+another = git ${buildout:github-cloneurl}${forks:another}/another.git pushurl=${buildout:github-pushurl}${forks:another}/another.git branch=${branches:another}
+the-repo = git ${buildout:github-cloneurl}${forks:the-repo}/the-repo.git pushurl=${buildout:github-pushurl}${forks:the-repo}/the-repo.git branch=${branches:the-repo}
 ''',
 
             result)
@@ -176,6 +197,9 @@ github-git = git://github.com/
 
 
 [branches]
+
+
+[forks]
 
 
 [sources]
@@ -211,8 +235,12 @@ github-git = git://github.com/
 the.repo = master
 
 
+[forks]
+the.repo = organisation
+
+
 [sources]
-the.repo = git ${buildout:github-cloneurl}organisation/the.repo.git pushurl=${buildout:github-pushurl}organisation/the.repo.git branch=${branches:the.repo}
+the.repo = git ${buildout:github-cloneurl}${forks:the.repo}/the.repo.git pushurl=${buildout:github-pushurl}${forks:the.repo}/the.repo.git branch=${branches:the.repo}
 ''',
             result)
 
@@ -244,8 +272,12 @@ github-git = git://github.com/
 the.repo = master
 
 
+[forks]
+the.repo = john.doe
+
+
 [sources]
-the.repo = git ${buildout:github-cloneurl}john.doe/the.repo.git pushurl=${buildout:github-pushurl}john.doe/the.repo.git branch=${branches:the.repo}
+the.repo = git ${buildout:github-cloneurl}${forks:the.repo}/the.repo.git pushurl=${buildout:github-pushurl}${forks:the.repo}/the.repo.git branch=${branches:the.repo}
 ''',
             result)
 
@@ -276,8 +308,12 @@ github-git = git://github.com/
 the.repo = master
 
 
+[forks]
+the.repo = bottom
+
+
 [sources]
-the.repo = git ${buildout:github-cloneurl}bottom/the.repo.git pushurl=${buildout:github-pushurl}bottom/the.repo.git branch=${branches:the.repo}
+the.repo = git ${buildout:github-cloneurl}${forks:the.repo}/the.repo.git pushurl=${buildout:github-pushurl}${forks:the.repo}/the.repo.git branch=${branches:the.repo}
 ''',
             result)
 
@@ -340,6 +376,9 @@ github-git = git://github.com/
 
 
 [branches]
+
+
+[forks]
 
 
 [sources]

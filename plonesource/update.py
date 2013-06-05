@@ -66,20 +66,29 @@ def extract_repo_data(repo):
     if getattr(repo, 'master_branch', None) is None:
         raise EmptyRepositoryException('%s is empty' % repo.name)
 
+    clone_url = '${buildout:github-cloneurl}${forks:%s}/%s.git' % (
+        repo.name, repo.name)
+
+    push_url = '${buildout:github-pushurl}${forks:%s}/%s.git' % (
+        repo.name, repo.name)
+
     return {'name': repo.name,
-            'clone_url': '${buildout:github-cloneurl}%s.git' % repo.full_name,
-            'push_url': '${buildout:github-pushurl}%s.git' % repo.full_name,
+            'owner': repo.owner.login,
+            'clone_url': clone_url,
+            'push_url': push_url,
             'branch': repo.master_branch}
 
 
 def generate_sources_cfg(repositories):
     branches = []
     sources = []
+    forks = []
 
     for _name, item in repositories.items():
         branches.append('%(name)s = %(branch)s' % item)
         sources.append('%(name)s = git %(clone_url)s pushurl=%(push_url)s'
                        ' branch=${branches:%(name)s}' % item)
+        forks.append('%(name)s = %(owner)s' % item)
 
     lines = [
         '[buildout]',
@@ -100,6 +109,12 @@ def generate_sources_cfg(repositories):
         sorted(branches) + [
         '',
         '',
+
+        '[forks]'] + \
+        sorted(forks) + [
+        '',
+        '',
+
 
         '[sources]'] + \
         sorted(sources) + [

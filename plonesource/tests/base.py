@@ -31,28 +31,38 @@ class GithubStubTestCase(MockerTestCase, TestCase):
             self._stub_repo(repo)
 
     def _stub_repo(self, repo):
-        if repo.principal not in self.repositories_by_principal:
-            self.repositories_by_principal[repo.principal] = []
+        if repo.owner.login not in self.repositories_by_principal:
+            self.repositories_by_principal[repo.owner.login] = []
             self.expect(
-                self.github_stub.repos.list(repo.principal).all()).result(
-                self.repositories_by_principal[repo.principal])
+                self.github_stub.repos.list(repo.owner.login).all()).result(
+                self.repositories_by_principal[repo.owner.login])
 
-        self.repositories_by_principal[repo.principal].append(repo)
+        self.repositories_by_principal[repo.owner.login].append(repo)
 
         repo_with_parent = repo.get_repo_with_parent()
 
         self.expect(self.github_stub.repos.get(
                 repo=repo.name,
-                user=repo.principal)).result(repo_with_parent)
+                user=repo.owner.login)).result(repo_with_parent)
+
+
+class User(object):
+    """Represents a github user or organisation in tests.
+    """
+
+    def __init__(self, login):
+        self.login = login
 
 
 class Repository(object):
 
     def __init__(self, fullname, master_branch='master', parent=None):
         self.full_name = fullname
-        self.principal, self.name = fullname.split('/')
+        principal, self.name = fullname.split('/')
         self.clone_url = 'https://github.com/%s.git' % fullname
         self.ssh_url = 'git@github.com:%s.git' % fullname
+
+        self.owner = User(principal)
 
         if parent:
             self._parent = parent
