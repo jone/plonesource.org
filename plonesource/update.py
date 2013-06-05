@@ -67,8 +67,8 @@ def extract_repo_data(repo):
         raise EmptyRepositoryException('%s is empty' % repo.name)
 
     return {'name': repo.name,
-            'clone_url': repo.clone_url,
-            'push_url': repo.ssh_url,
+            'clone_url': '${buildout:github-cloneurl}%s.git' % repo.full_name,
+            'push_url': '${buildout:github-pushurl}%s.git' % repo.full_name,
             'branch': repo.master_branch}
 
 
@@ -85,11 +85,22 @@ def generate_sources_cfg(repositories):
         '[buildout]',
         'auto-checkout =',
         'sources = sources',
+        'github-cloneurl = ${buildout:github-https}',
+        'github-pushurl = ${buildout:github-ssh}',
         '',
+        '',
+
+        'github-https = https://github.com/',
+        'github-ssh = git@github.com:',
+        'github-git = git://github.com/',
+        '',
+        '',
+
         '[branches]'] + \
         sorted(branches) + [
         '',
         '',
+
         '[sources]'] + \
         sorted(sources) + [
         '']

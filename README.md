@@ -11,41 +11,7 @@ format so that it can easily be used with buildout.
 
 ## Usage
 
-Extend your buildout from the
-[sources.cfg](http://plonesource.org/sources.cfg) and configure what
-repositories you want to checkout with the `auto-checkout` option:
-
-
-    [buildout]
-    extends = http://plonesource.org/sources.cfg
-
-    extensions =
-        mr.developer
-
-    auto-checkout =
-        Products.CMFPlone
-        zope.interface
-        collective.transmogrifier
-
-
-
-
-## Checkout a branch of a package
-
-Checking out non-master branches is easy:
-
-
-    [buildout]
-    extends = http://plonesource.org/sources.cfg
-
-    extensions =
-        mr.developer
-
-    auto-checkout =
-        Products.CMFPlone
-
-    [branches]
-    Products.CMFPlone = 4.3.x
+Visit the [plonesource.org](http://plonesource.org/) for usage documentation.
 
 
 ## Handling of forks

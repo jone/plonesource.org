@@ -20,6 +20,14 @@ class TestUpdateSourcesConfig(GithubStubTestCase):
             '''[buildout]
 auto-checkout =
 sources = sources
+github-cloneurl = ${buildout:github-https}
+github-pushurl = ${buildout:github-ssh}
+
+
+github-https = https://github.com/
+github-ssh = git@github.com:
+github-git = git://github.com/
+
 
 [branches]
 foo.bar = master
@@ -27,8 +35,8 @@ foo.baz = master
 
 
 [sources]
-foo.bar = git https://github.com/foo/foo.bar.git pushurl=git@github.com:foo/foo.bar.git branch=${branches:foo.bar}
-foo.baz = git https://github.com/foo/foo.baz.git pushurl=git@github.com:foo/foo.baz.git branch=${branches:foo.baz}
+foo.bar = git ${buildout:github-cloneurl}foo/foo.bar.git pushurl=${buildout:github-pushurl}foo/foo.bar.git branch=${branches:foo.bar}
+foo.baz = git ${buildout:github-cloneurl}foo/foo.baz.git pushurl=${buildout:github-pushurl}foo/foo.baz.git branch=${branches:foo.baz}
 ''',
 
             result,
@@ -50,6 +58,14 @@ foo.baz = git https://github.com/foo/foo.baz.git pushurl=git@github.com:foo/foo.
             '''[buildout]
 auto-checkout =
 sources = sources
+github-cloneurl = ${buildout:github-https}
+github-pushurl = ${buildout:github-ssh}
+
+
+github-https = https://github.com/
+github-ssh = git@github.com:
+github-git = git://github.com/
+
 
 [branches]
 bar = master
@@ -58,9 +74,9 @@ foo = master
 
 
 [sources]
-bar = git https://github.com/foo/bar.git pushurl=git@github.com:foo/bar.git branch=${branches:bar}
-baz = git https://github.com/bar/baz.git pushurl=git@github.com:bar/baz.git branch=${branches:baz}
-foo = git https://github.com/foo/foo.git pushurl=git@github.com:foo/foo.git branch=${branches:foo}
+bar = git ${buildout:github-cloneurl}foo/bar.git pushurl=${buildout:github-pushurl}foo/bar.git branch=${branches:bar}
+baz = git ${buildout:github-cloneurl}bar/baz.git pushurl=${buildout:github-pushurl}bar/baz.git branch=${branches:baz}
+foo = git ${buildout:github-cloneurl}foo/foo.git pushurl=${buildout:github-pushurl}foo/foo.git branch=${branches:foo}
 ''',
 
             result)
@@ -78,6 +94,14 @@ foo = git https://github.com/foo/foo.git pushurl=git@github.com:foo/foo.git bran
             '''[buildout]
 auto-checkout =
 sources = sources
+github-cloneurl = ${buildout:github-https}
+github-pushurl = ${buildout:github-ssh}
+
+
+github-https = https://github.com/
+github-ssh = git@github.com:
+github-git = git://github.com/
+
 
 [branches]
 foo.bar = master
@@ -85,8 +109,8 @@ foo.baz = master
 
 
 [sources]
-foo.bar = git https://github.com/foo/foo.bar.git pushurl=git@github.com:foo/foo.bar.git branch=${branches:foo.bar}
-foo.baz = git https://github.com/foo/foo.baz.git pushurl=git@github.com:foo/foo.baz.git branch=${branches:foo.baz}
+foo.bar = git ${buildout:github-cloneurl}foo/foo.bar.git pushurl=${buildout:github-pushurl}foo/foo.bar.git branch=${branches:foo.bar}
+foo.baz = git ${buildout:github-cloneurl}foo/foo.baz.git pushurl=${buildout:github-pushurl}foo/foo.baz.git branch=${branches:foo.baz}
 ''',
 
             result)
@@ -106,6 +130,14 @@ foo.baz = git https://github.com/foo/foo.baz.git pushurl=git@github.com:foo/foo.
             '''[buildout]
 auto-checkout =
 sources = sources
+github-cloneurl = ${buildout:github-https}
+github-pushurl = ${buildout:github-ssh}
+
+
+github-https = https://github.com/
+github-ssh = git@github.com:
+github-git = git://github.com/
+
 
 [branches]
 another = master
@@ -113,8 +145,8 @@ the-repo = master
 
 
 [sources]
-another = git https://github.com/foo/another.git pushurl=git@github.com:foo/another.git branch=${branches:another}
-the-repo = git https://github.com/bar/the-repo.git pushurl=git@github.com:bar/the-repo.git branch=${branches:the-repo}
+another = git ${buildout:github-cloneurl}foo/another.git pushurl=${buildout:github-pushurl}foo/another.git branch=${branches:another}
+the-repo = git ${buildout:github-cloneurl}bar/the-repo.git pushurl=${buildout:github-pushurl}bar/the-repo.git branch=${branches:the-repo}
 ''',
 
             result)
@@ -134,6 +166,14 @@ the-repo = git https://github.com/bar/the-repo.git pushurl=git@github.com:bar/th
             '''[buildout]
 auto-checkout =
 sources = sources
+github-cloneurl = ${buildout:github-https}
+github-pushurl = ${buildout:github-ssh}
+
+
+github-https = https://github.com/
+github-ssh = git@github.com:
+github-git = git://github.com/
+
 
 [branches]
 
@@ -158,13 +198,21 @@ sources = sources
             '''[buildout]
 auto-checkout =
 sources = sources
+github-cloneurl = ${buildout:github-https}
+github-pushurl = ${buildout:github-ssh}
+
+
+github-https = https://github.com/
+github-ssh = git@github.com:
+github-git = git://github.com/
+
 
 [branches]
 the.repo = master
 
 
 [sources]
-the.repo = git https://github.com/organisation/the.repo.git pushurl=git@github.com:organisation/the.repo.git branch=${branches:the.repo}
+the.repo = git ${buildout:github-cloneurl}organisation/the.repo.git pushurl=${buildout:github-pushurl}organisation/the.repo.git branch=${branches:the.repo}
 ''',
             result)
 
@@ -183,13 +231,21 @@ the.repo = git https://github.com/organisation/the.repo.git pushurl=git@github.c
             '''[buildout]
 auto-checkout =
 sources = sources
+github-cloneurl = ${buildout:github-https}
+github-pushurl = ${buildout:github-ssh}
+
+
+github-https = https://github.com/
+github-ssh = git@github.com:
+github-git = git://github.com/
+
 
 [branches]
 the.repo = master
 
 
 [sources]
-the.repo = git https://github.com/john.doe/the.repo.git pushurl=git@github.com:john.doe/the.repo.git branch=${branches:the.repo}
+the.repo = git ${buildout:github-cloneurl}john.doe/the.repo.git pushurl=${buildout:github-pushurl}john.doe/the.repo.git branch=${branches:the.repo}
 ''',
             result)
 
@@ -207,13 +263,21 @@ the.repo = git https://github.com/john.doe/the.repo.git pushurl=git@github.com:j
             '''[buildout]
 auto-checkout =
 sources = sources
+github-cloneurl = ${buildout:github-https}
+github-pushurl = ${buildout:github-ssh}
+
+
+github-https = https://github.com/
+github-ssh = git@github.com:
+github-git = git://github.com/
+
 
 [branches]
 the.repo = master
 
 
 [sources]
-the.repo = git https://github.com/bottom/the.repo.git pushurl=git@github.com:bottom/the.repo.git branch=${branches:the.repo}
+the.repo = git ${buildout:github-cloneurl}bottom/the.repo.git pushurl=${buildout:github-pushurl}bottom/the.repo.git branch=${branches:the.repo}
 ''',
             result)
 
@@ -266,6 +330,14 @@ class TestUpdateCommand(TestCase):
             '''[buildout]
 auto-checkout =
 sources = sources
+github-cloneurl = ${buildout:github-https}
+github-pushurl = ${buildout:github-ssh}
+
+
+github-https = https://github.com/
+github-ssh = git@github.com:
+github-git = git://github.com/
+
 
 [branches]
 
