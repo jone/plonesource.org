@@ -16,6 +16,8 @@
 
         <script src="jquery-ui-1.10.3.custom/js/jquery-1.9.1.js"></script>
         <script src="jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js"></script>
+        <script src="javascripts/package-search.js"></script>
+
         <script type="text/javascript">
 
             var _gaq = _gaq || [];
@@ -39,9 +41,9 @@
 
                 <p class="view"><a href="https://github.com/jone/plonesource.org">View the Project on GitHub <small>jone/plonesource.org</small></a></p>
 
-                <a href="https://travis-ci.org/jone/plonesource.org">
-                    <img alt="https://travis-ci.org/jone/plonesource.org.png?branch=master" src="https://travis-ci.org/jone/plonesource.org.png?branch=master" style="max-width:100%;" />
-                </a>
+                <div id="package-search">
+                    <input type="text" name="package" placeholder="Package name" />
+                </div>
 
             </header>
             <section>
@@ -172,6 +174,12 @@ Products.CMFPlone = my-github-login</code></pre>
 
             </section>
             <footer>
+                <p>
+                    <a href="https://travis-ci.org/jone/plonesource.org">
+                        <img alt="https://travis-ci.org/jone/plonesource.org.png?branch=master" src="https://travis-ci.org/jone/plonesource.org.png?branch=master" style="max-width:100%;" />
+                    </a>
+                </p>
+
                 <p>
                     Do you have a question?
                     Contact <a href="https://github.com/jone">me</a> or
