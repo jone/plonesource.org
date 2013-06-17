@@ -8,9 +8,7 @@ a [mr.developer](https://pypi.python.org/pypi/mr.developer) compatible
 format so that it can easily be used with buildout.
 
 
-.. image:: https://travis-ci.org/jone/plonesource.org.png?branch=master
-   :target: https://travis-ci.org/jone/plonesource.org
-
+[![Build Status](https://travis-ci.org/jone/plonesource.org.png?branch=master)](https://travis-ci.org/jone/plonesource.org)
 
 
 ## Usage
