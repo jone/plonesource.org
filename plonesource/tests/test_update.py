@@ -244,6 +244,43 @@ the.repo = git ${buildout:github-cloneurl}${forks:the.repo}/the.repo.git pushurl
 ''',
             result)
 
+    def test_forks_where_parent_was_deleted_are_included(self):
+        self.stub_repositories(
+            Repository('foo/foo.bar', fork=True))
+        self.replay()
+
+        result = update({'principals': ['foo']})
+
+        self.maxDiff = None
+        self.assertMultiLineEqual(
+            '''[buildout]
+auto-checkout =
+sources = sources
+github-cloneurl = ${buildout:github-https}
+github-pushurl = ${buildout:github-ssh}
+
+
+github-https = https://github.com/
+github-ssh = git@github.com:
+github-git = git://github.com/
+
+
+[branches]
+foo.bar = master
+
+
+[forks]
+foo.bar = foo
+
+
+[sources]
+foo.bar = git ${buildout:github-cloneurl}${forks:foo.bar}/foo.bar.git pushurl=${buildout:github-pushurl}${forks:foo.bar}/foo.bar.git branch=${branches:foo.bar}
+''',
+
+            result,
+            'The sources.cfg should exactly contain the repositories'
+            ' foo/foo.bar')
+
     def test_forks_can_be_used_by_defining_it_explictily(self):
         original = Repository('organisation/the.repo')
         fork = Repository('john.doe/the.repo', parent=original)

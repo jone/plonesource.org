@@ -56,7 +56,8 @@ class User(object):
 
 class Repository(object):
 
-    def __init__(self, fullname, master_branch='master', parent=None):
+    def __init__(self, fullname, master_branch='master', parent=None,
+                 fork=None):
         self.full_name = fullname
         principal, self.name = fullname.split('/')
         self.clone_url = 'https://github.com/%s.git' % fullname
@@ -64,9 +65,12 @@ class Repository(object):
 
         self.owner = User(principal)
 
+        self._parent = parent
         if parent:
             self._parent = parent
             self.fork = True
+        elif fork is not None:
+            self.fork = fork
         else:
             self.fork = False
 
@@ -85,5 +89,6 @@ class Repository(object):
             return self
 
         repo = copy(self)
-        repo.parent = repo._parent
+        if self._parent:
+            repo.parent = repo._parent
         return repo

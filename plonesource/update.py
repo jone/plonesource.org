@@ -44,7 +44,12 @@ def load_principal_repositories(principal, result):
         while repo.fork:
             # The repo from repos.list does not have "parent" set.
             # We need to re-get the repo with the parent.
-            repo = get_repository(repo.full_name).parent
+            repo = get_repository(repo.full_name)
+
+            if not hasattr(repo, 'parent'):
+                break
+            else:
+                repo = repo.parent
 
         try:
             result[repo.name] = extract_repo_data(repo)
