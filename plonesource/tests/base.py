@@ -77,7 +77,7 @@ class Repository(object):
         if master_branch is not None:
             # github returns no master_branch on empty repositories, so
             # it should not be set to None her but not set at all.
-            self.master_branch = master_branch
+            self.default_branch = master_branch
 
     def get_repo_with_parent(self):
         """github.repos.list returns no .parent, but github.repos.get does.
