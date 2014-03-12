@@ -68,7 +68,7 @@ def get_repository(fullname):
 
 
 def extract_repo_data(repo):
-    if getattr(repo, 'master_branch', None) is None:
+    if getattr(repo, 'default_branch', None) is None:
         raise EmptyRepositoryException('%s is empty' % repo.name)
 
     clone_url = '${buildout:github-cloneurl}${forks:%s}/%s.git' % (
@@ -81,7 +81,7 @@ def extract_repo_data(repo):
             'owner': repo.owner.login,
             'clone_url': clone_url,
             'push_url': push_url,
-            'branch': repo.master_branch}
+            'branch': repo.default_branch}
 
 
 def generate_sources_cfg(repositories):
