@@ -22,12 +22,12 @@ class EmptyRepositoryException(Exception):
 
 
 def update(config):
-    principals = reversed(config.get('principals', []))
+    organisations = reversed(config.get('organisations', []))
     repos = config.get('repos', [])
 
     repositories = {}
 
-    for principal in principals:
+    for principal in organisations:
         load_principal_repositories(principal, repositories)
 
     for fullname in repos:
@@ -40,7 +40,7 @@ def update(config):
 
 
 def load_principal_repositories(principal, result):
-    for repo in GITHUB.repos.list(principal).all():
+    for repo in GITHUB.repos.list_by_org(principal).all():
         while repo.fork:
             # The repo from repos.list does not have "parent" set.
             # We need to re-get the repo with the parent.

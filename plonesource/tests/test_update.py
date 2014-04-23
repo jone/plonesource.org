@@ -13,7 +13,7 @@ class TestUpdateSourcesConfig(GithubStubTestCase):
             Repository('foo/foo.baz'))
         self.replay()
 
-        result = update({'principals': ['foo']})
+        result = update({'organisations': ['foo']})
 
         self.maxDiff = None
         self.assertMultiLineEqual(
@@ -48,7 +48,7 @@ foo.baz = git ${buildout:github-cloneurl}${forks:foo.baz}/foo.baz.git pushurl=${
             'The sources.cfg should exactly contain the repositories foo/foo.bar'
             ' and foo/foo.baz.')
 
-    def test_top_principals_have_precedence(self):
+    def test_top_organisations_have_precedence(self):
         self.stub_repositories(
             Repository('foo/foo'),
             Repository('foo/bar'),
@@ -56,7 +56,7 @@ foo.baz = git ${buildout:github-cloneurl}${forks:foo.baz}/foo.baz.git pushurl=${
             Repository('bar/baz'))
         self.replay()
 
-        result = update({'principals': ['foo', 'bar']})
+        result = update({'organisations': ['foo', 'bar']})
 
         self.maxDiff = None
         self.assertMultiLineEqual(
@@ -138,7 +138,7 @@ foo.baz = git ${buildout:github-cloneurl}${forks:foo.baz}/foo.baz.git pushurl=${
             Repository('bar/the-repo'))
         self.replay()
 
-        result = update({'principals': ['foo'],
+        result = update({'organisations': ['foo'],
                          'repos': ['bar/the-repo']})
 
         self.maxDiff = None
@@ -179,7 +179,7 @@ the-repo = git ${buildout:github-cloneurl}${forks:the-repo}/the-repo.git pushurl
             Repository('bar/bar', master_branch=None))
         self.replay()
 
-        result = update({'principals': ['foo'],
+        result = update({'organisations': ['foo'],
                          'repos': ['bar/bar']})
 
         self.maxDiff = None
@@ -215,7 +215,7 @@ github-git = git://github.com/
         self.stub_repositories(original, first_fork, second_fork)
         self.replay()
 
-        result = update({'principals': ['peter.griffin']})
+        result = update({'organisations': ['peter.griffin']})
 
         self.maxDiff = None
         self.assertMultiLineEqual(
@@ -249,7 +249,7 @@ the.repo = git ${buildout:github-cloneurl}${forks:the.repo}/the.repo.git pushurl
             Repository('foo/foo.bar', fork=True))
         self.replay()
 
-        result = update({'principals': ['foo']})
+        result = update({'organisations': ['foo']})
 
         self.maxDiff = None
         self.assertMultiLineEqual(
@@ -288,7 +288,7 @@ foo.bar = git ${buildout:github-cloneurl}${forks:foo.bar}/foo.bar.git pushurl=${
         self.stub_repositories(original, fork)
         self.replay()
 
-        result = update({'principals': ['john.doe'],
+        result = update({'organisations': ['john.doe'],
                          'repos': ['john.doe/the.repo']})
 
         self.maxDiff = None
@@ -325,7 +325,7 @@ the.repo = git ${buildout:github-cloneurl}${forks:the.repo}/the.repo.git pushurl
         self.stub_repositories(top_repo, bottom_repo)
         self.replay()
 
-        result = update({'principals': ['top', 'bottom']})
+        result = update({'organisations': ['top', 'bottom']})
 
         self.maxDiff = None
         self.assertMultiLineEqual(
