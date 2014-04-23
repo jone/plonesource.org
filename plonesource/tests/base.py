@@ -34,7 +34,7 @@ class GithubStubTestCase(MockerTestCase, TestCase):
         if repo.owner.login not in self.repositories_by_principal:
             self.repositories_by_principal[repo.owner.login] = []
             self.expect(
-                self.github_stub.repos.list(repo.owner.login).all()).result(
+                self.github_stub.repos.list_by_org(repo.owner.login).all()).result(
                 self.repositories_by_principal[repo.owner.login])
 
         self.repositories_by_principal[repo.owner.login].append(repo)
