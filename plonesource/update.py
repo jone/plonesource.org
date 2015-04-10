@@ -1,6 +1,7 @@
 from datetime import datetime
 from plonesource import config
 from pygithub3 import Github
+from pygithub3.exceptions import NotFound
 import os
 
 
@@ -64,8 +65,11 @@ def load_single_repositories(fullname, result):
 
 def get_repository(fullname):
     username, reponame = fullname.split('/')
-    return GITHUB.repos.get(user=username, repo=reponame)
-
+    try:
+        return GITHUB.repos.get(user=username, repo=reponame)
+    except NotFound:
+        print "Repo %s not found." % reponame
+        raise EmptyRepositoryException('%s not found.' % reponame)
 
 def extract_repo_data(repo):
     if getattr(repo, 'default_branch', None) is None:
