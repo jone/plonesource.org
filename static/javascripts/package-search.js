@@ -31,8 +31,25 @@ function parseINIString(data){
   return value;
 }
 
+/* from http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript */
+function getParameterByName(name) {
+  name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+  var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+    results = regex.exec(location.search);
+  return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function fuzzyMatchRepos(repos, query, response) {
+  var fuzzyMatch = new RegExp(query.split('').join('\\w*').replace(/\W/, ""), 'i');
+  response($.grep(Object.keys(repos), function(item) {
+    return fuzzyMatch.test(repos[item]);
+  }));
+}
 
 $(document).ready(function() {
+
+  var query = getParameterByName('q');
+  $("#package-search input").val(query);
 
   $.ajax({
     url: 'sources.cfg',
@@ -47,10 +64,7 @@ $(document).ready(function() {
 
       $("#package-search input").autocomplete({
         source: function(request, response) {
-          var fuzzyMatch = new RegExp(request.term.split('').join('\\w*').replace(/\W/, ""), 'i');
-          response($.grep(Object.keys(options), function(item) {
-            return fuzzyMatch.test(options[item]);
-          }));
+          fuzzyMatchRepos(options, request.term, response);
         },
 
         select: function(event, ui) {
@@ -62,7 +76,12 @@ $(document).ready(function() {
         }
 
       }).focus();
+      $("#package-search input").autocomplete("search");
 
+      fuzzyMatchRepos(options, query, function(result) {
+        if (result.length === 1)
+          window.location = 'https://github.com/'.concat(result[0]);
+      });
     }
   });
 
