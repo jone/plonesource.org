@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+  <ShortName>plonesource.org search</ShortName>
+  <Description>Search for Plone, Zope and add-on packages from github.</Description>
+  <Tags>plone zope github source</Tags>
+  <Contact>support@4teamwork.ch</Contact>
+  <Url type="text/html"
+       template="http://plonesource.org/?q={searchTerms}"/>
+</OpenSearchDescription>
