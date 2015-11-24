@@ -58,7 +58,7 @@ $(document).ready(function() {
           $("#package-search input").val('');
 
           var selected = ui.item.value;
-          window.open('https://github.com/'.concat(selected));
+          window.location = 'https://github.com/'.concat(selected);
         }
 
       }).focus();
