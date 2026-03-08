@@ -1,3 +1,8 @@
+> [!WARNING]
+> This protect is no longer operational.
+
+--- 
+
 # plonesource.org
 
 The website [plonesource.org](http://plonesource.org/) lists checkout
